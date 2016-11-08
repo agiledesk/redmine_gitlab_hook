@@ -31,7 +31,7 @@ class GitlabHookController < ActionController::Base
         if errors.empty?
           render(:text => 'OK', :status => :ok)
         else
-          render(:text => "Git command failed on repository: #{errors.join(', ')}!", :status => :not_acceptable)
+          render(:text => "Git command failed on repository: #{errors.join(', ')}!" + log, :status => :not_acceptable)
         end
       end
     else
@@ -53,7 +53,7 @@ class GitlabHookController < ActionController::Base
     logger.debug { "GitLabHook: Executing command: '#{command}'" }
 
     # Get a path to a temp file
-    logfile = File.new('gitlab_hook_exec',"w+")
+    logfile = Tempfile.new('gitlab_hook_exec')
     logfile.close
 
     success = system("#{command} > #{logfile.path} 2>&1")
