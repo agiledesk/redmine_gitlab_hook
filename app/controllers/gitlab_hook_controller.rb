@@ -5,6 +5,7 @@ class GitlabHookController < ActionController::Base
   GIT_BIN = Redmine::Configuration['scm_git_command'] || 'git'
   skip_before_filter :verify_authenticity_token, :check_if_login_required
 
+  @@log = "logtest"
 
   def index
     if request.post?
